@@ -7876,7 +7876,7 @@ async function run() {
         const release = await github.git.getRef({
           owner,
           repo,
-          ref: tagName
+          ref: tagRef
         });
         
         console.log(release);
