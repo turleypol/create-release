@@ -94,7 +94,7 @@ describe('Create Release', () => {
       prerelease: true
     });
   });
-  
+
   test('Create release endpoint is called when an existing tag does not exist', async () => {
     core.getInput = jest
       .fn()
@@ -115,7 +115,7 @@ describe('Create Release', () => {
       prerelease: false
     });
   });
-  
+
   test('Older release is deleted', async () => {
     core.getInput = jest
       .fn()
@@ -135,7 +135,7 @@ describe('Create Release', () => {
       draft: false,
       prerelease: false
     });
-  }
+  });
 
   test('Outputs are set', async () => {
     core.getInput = jest
