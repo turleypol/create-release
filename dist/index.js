@@ -7872,7 +7872,7 @@ async function run() {
         // Get a single reference
         // API Documentation: https://developer.github.com/v3/git/refs/#get-a-single-reference
         // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-git-get-ref
-        const getRefResponse = await github.repos.getRef({
+        const getRefResponse = await github.git.getRef({
           owner,
           repo,
           ref: `tags/${tag}`
@@ -7906,7 +7906,7 @@ async function run() {
           // Delete a reference
           // API Documentation: https://developer.github.com/v3/git/refs/#delete-a-reference
           // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-git-delete-ref
-          await github.repos.deleteRef({
+          await github.git.deleteRef({
             owner,
             repo,
             ref: `tags/${tag}`
