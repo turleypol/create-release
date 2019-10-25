@@ -7885,6 +7885,8 @@ async function run() {
       } catch (error) {
         // If this is a 404 then we should be okay to continue on
         // It just means that the release has not been created
+        
+        console.log(error);
         if (error.status !== 404) {
           throw error;
         }
