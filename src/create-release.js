@@ -43,7 +43,7 @@ async function run() {
           const getReleaseResponse = await github.repos.getReleaseByTag({
             owner,
             repo,
-            ref: tag
+            tag
           });
 
           const releaseId = getReleaseResponse.data.id;
