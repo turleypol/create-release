@@ -33,6 +33,8 @@ async function run() {
           ref: tagName
         });
         
+        console.log(release);
+        
         // Delete the tag and release associated with this release
       } catch (error) {
         // If this is a 404 then we should be okay to continue on
