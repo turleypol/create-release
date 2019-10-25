@@ -7876,10 +7876,15 @@ async function run() {
         const release = await github.git.getRef({
           owner,
           repo,
-          tagRef
+          ref: tagRef
         });
         console.log(release);
       } catch (error) {
+        // If this is a 404 then we should be okay to continue on
+        // It just means that the release has not been created
+        if (error.status !== 404) {
+          throw error;
+        }
         console.log(error);
       }
     }
