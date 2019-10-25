@@ -16,9 +16,9 @@ async function run() {
     const tagRef = tagName.replace('refs/', '');
     const tag = tagRef.replace('tags/', '');
     const releaseName = core.getInput('release_name', { required: true }).replace('refs/tags/', '');
+    const replaceOldTag = core.getInput('replace_old_tag', { required: false }) === 'true';
     const draft = core.getInput('draft', { required: false }) === 'true';
     const prerelease = core.getInput('prerelease', { required: false }) === 'true';
-    const replaceOldTag = core.getInput('replace_old_tag', { required: false }) === 'true';
 
     if (replaceOldTag) {
       // Check to see if we need to replace an older release
@@ -30,16 +30,16 @@ async function run() {
         const release = await github.git.getRef({
           owner,
           repo,
-          ref: tagRef
+          ref: tagName
         });
-        console.log(release);
+        
+        // Delete the tag and release associated with this release
       } catch (error) {
         // If this is a 404 then we should be okay to continue on
         // It just means that the release has not been created
         if (error.status !== 404) {
           throw error;
         }
-        console.log(error);
       }
     }
 

@@ -95,6 +95,27 @@ describe('Create Release', () => {
     });
   });
   
+  test('Create release endpoint is called when an existing tag does not exist', async () => {
+    core.getInput = jest
+      .fn()
+      .mockReturnValueOnce('refs/tags/v1.0.0')
+      .mockReturnValueOnce('myRelease')
+      .mockReturnValueOnce('true')
+      .mockReturnValueOnce('false')
+      .mockReturnValueOnce('false');
+
+    await run();
+
+    expect(createRelease).toHaveBeenCalledWith({
+      owner: 'owner',
+      repo: 'repo',
+      tag_name: 'v1.0.0',
+      name: 'myRelease',
+      draft: false,
+      prerelease: false
+    });
+  });
+  
   test('Older release is deleted', async () => {
     core.getInput = jest
       .fn()
