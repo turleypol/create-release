@@ -13,10 +13,30 @@ async function run() {
     const tagName = core.getInput('tag_name', { required: true });
 
     // This removes the 'refs/tags' portion of the string, i.e. from 'refs/tags/v1.10.15' to 'v1.10.15'
-    const tag = tagName.replace('refs/tags/', '');
+    const tagRef = tagName.replace('refs/', '');
+    const tag = tagRef.replace('tags/', '');
     const releaseName = core.getInput('release_name', { required: true }).replace('refs/tags/', '');
     const draft = core.getInput('draft', { required: false }) === 'true';
     const prerelease = core.getInput('prerelease', { required: false }) === 'true';
+    const replaceOldTag = core.getInput('replace_old_tag', { required: false }) === 'true';
+
+    if (replaceOldTag) {
+      // Check to see if we need to replace an older release
+      
+      try {
+        // Get a single reference
+        // API Documentation: https://developer.github.com/v3/git/refs/#get-a-single-reference
+        // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-git-get-ref
+        const release = await github.git.getRef({
+          owner,
+          repo,
+          tagRef
+        });
+        console.log(release);
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     // Create a release
     // API Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
