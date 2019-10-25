@@ -7872,7 +7872,7 @@ async function run() {
         // Get a single reference
         // API Documentation: https://developer.github.com/v3/git/refs/#get-a-single-reference
         // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-git-get-ref
-        const getRefResponse = await github.repos.get({
+        const getRefResponse = await github.repos.getRef({
           owner,
           repo,
           ref: `tags/${tag}`
