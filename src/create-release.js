@@ -21,7 +21,7 @@ async function run() {
 
     let responseData = null;
 
-   console.log("start");
+   core.debug("start");
     if (replaceOldTag) {
       // Check to see if we need to replace an older release
 
@@ -53,9 +53,9 @@ async function run() {
 
           const releaseId = getReleaseResponse.data.id;
           if (release.assets){
-   console.log("aaserts found");
+   core.debug("aaserts found");
 release.assets.forEach(function(a, index) {
-   console.log("foreach: " + a.name);
+   core.debug("foreach: " + a.name);
 }
 );
           }
