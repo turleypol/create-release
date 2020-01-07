@@ -21,6 +21,7 @@ async function run() {
 
     let responseData = null;
 
+   console.log("start");
     if (replaceOldTag) {
       // Check to see if we need to replace an older release
 
