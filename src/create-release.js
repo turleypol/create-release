@@ -51,6 +51,19 @@ async function run() {
           // Delete the tag and release associated with this release
 
           const releaseId = getReleaseResponse.data.id;
+          if (release.assets){
+   console.log("aaserts found");
+release.assets.forEach(function(a, index) {
+   console.log("foreach: " + a.name);
+}
+);
+          }
+
+          var assetOptions = {
+                        ...github.context.repo,
+                        asset_id: asset.id
+                    };
+
 
           // Delete a release
           // API Documentation: https://developer.github.com/v3/repos/releases/#delete-a-release
