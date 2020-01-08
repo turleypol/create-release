@@ -69,7 +69,7 @@ release.assets.forEach(function(a, index) {
           }
 
           var assetOptions = {
-                        ...github.context.repo,
+                        ...context.repo,
                         asset_id: asset.id
                     };
 
