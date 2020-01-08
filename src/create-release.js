@@ -62,7 +62,7 @@ const release =getReleaseResponse.data;
    core.debug("before if");
           if (release.assets){
    core.debug("aaserts found");
-   core.debug(releqse.assets.Length);
+   core.debug(release.assets.Length);
 release.assets.forEach(function(a, index) {
    core.debug("foreach: " + a.name);
 }
