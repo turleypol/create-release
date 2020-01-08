@@ -505,8 +505,8 @@ async function run() {
         } else {
           // Delete the tag and release associated with this release
    core.debug("delete");
-
-          const releaseId = getReleaseResponse.data.id;
+const release =getReleaseResponse.data; 
+          const releaseId = release.id;
 
    core.debug("before if");
           if (release.assets){
