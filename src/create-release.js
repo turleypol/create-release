@@ -69,10 +69,15 @@ release.assets.forEach(function(a, index) {
 );
           }
 
-        /*  var assetOptions = {
+release.assets.forEach(function(a, index) {
+          var assetOptions = {
                         ...context.repo,
-                        asset_id: asset.id
-                    };*/
+                        asset_id: a.id
+                    };
+                    core.debug("delete "+a.name);
+                    github.repos.deleteReleaseAsset(assetOptions);
+}
+                    )
 
 
           // Delete a release
