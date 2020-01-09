@@ -21,11 +21,9 @@ async function run() {
 
     let responseData = null;
 
-   core.debug("start");
     if (replaceOldTag) {
       // Check to see if we need to replace an older release
 
-   core.debug("replace old tag");
       try {
         // Get a single reference
         // API Documentation: https://developer.github.com/v3/git/refs/#get-a-single-reference
@@ -37,7 +35,6 @@ async function run() {
         });
         const refSha = getRefResponse.data.object.sha;
 
-   core.debug("get ref succ");
         // Get a release by tag name
         // API Documentation: https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name
         // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-get-release-by-tag
@@ -47,37 +44,24 @@ async function run() {
           tag
         });
 
-   core.debug("get release");
         if (refSha === process.env.GITHUB_SHA) {
           // We don't need to bother with creating a release because it's already created
 
-   core.debug("already created");
           responseData = getReleaseResponse;
         } else {
           // Delete the tag and release associated with this release
-   core.debug("delete");
-const release =getReleaseResponse.data; 
+          const release = getReleaseResponse.data;
           const releaseId = release.id;
-
-   core.debug("before if");
-          if (release.assets){
-   core.debug("aaserts found");
-   core.debug(release.assets.Length);
-release.assets.forEach(function(a, index) {
-   core.debug("foreach: " + a.name);
-}
-);
+          // when assets exists already, first delete them, otherwise github seems to move them to a draft release sometimes
+          if (release.assets) {
+            release.assets.forEach(function(a, index) {
+              github.repos.deleteReleaseAsset({
+                owner,
+                repo,
+                asset_id: a.id
+              });
+            });
           }
-
-release.assets.forEach(function(a, index) {
-          var assetOptions = {
-                        ...context.repo,
-                        asset_id: a.id
-                    };
-                    core.debug("delete "+a.name);
-                    github.repos.deleteReleaseAsset(assetOptions);
-}
-                    )
 
 
           // Delete a release
