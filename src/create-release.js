@@ -23,7 +23,7 @@ async function run() {
 
     if (replaceOldTag) {
       // Check to see if we need to replace an older release
-
+core.debug("try get ref")
       try {
         // Get a single reference
         // API Documentation: https://developer.github.com/v3/git/refs/#get-a-single-reference
@@ -35,6 +35,7 @@ async function run() {
         });
         const refSha = getRefResponse.data.object.sha;
 
+core.debug("get ref success")
         // Get a release by tag name
         // API Documentation: https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name
         // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-get-release-by-tag
@@ -47,14 +48,18 @@ async function run() {
         if (refSha === process.env.GITHUB_SHA) {
           // We don't need to bother with creating a release because it's already created
 
+core.debug("already done")
           responseData = getReleaseResponse;
         } else {
           // Delete the tag and release associated with this release
           const release = getReleaseResponse.data;
           const releaseId = release.id;
           // when assets exists already, first delete them, otherwise github seems to move them to a draft release sometimes
+
+core.debug("deleting..")
           if (release.assets) {
             release.assets.forEach(function(a, index) {
+core.debug("delete "+a.name)
               github.repos.deleteReleaseAsset({
                 owner,
                 repo,
@@ -73,6 +78,7 @@ async function run() {
             release_id: releaseId
           });
 
+core.debug("deleted release")
           // Delete a reference
           // API Documentation: https://developer.github.com/v3/git/refs/#delete-a-reference
           // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-git-delete-ref
@@ -81,11 +87,13 @@ async function run() {
             repo,
             ref: `tags/${tag}`
           });
+core.debug("deleted ref")
         }
       } catch (error) {
         // If this is a 404 then we should be okay to continue on
         // It just means that the release has not been created
 
+core.debug("error")
         if (error.status !== 404) {
           throw error;
         }
